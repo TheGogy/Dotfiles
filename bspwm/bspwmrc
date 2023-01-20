@@ -1,0 +1,114 @@
+#!/bin/sh
+
+# ##############################################################################
+# #                                  ENV VARS                                  # 
+# ##############################################################################
+export WALLPAPER="$HOME/.wallpapers/winding-road-mtns.jpg"
+export LOCKSCREEN_WALLPAPER="$HOME/.wallpapers/lockscreen/put-on-your-tux.png"
+export BROWSER=/usr/bin/librewolf
+#export DRI_PRIME=1
+
+# ##############################################################################
+# #                                  FUNCTIONS                                 # 
+# ##############################################################################
+
+# Credits to 6gk/polka
+rule() { bspc rule -a "$@" & }
+config() { bspc config "$@" & }
+start() { pkill -x "$1"; { sleep 0.1; "$@" & }; }
+
+# ##############################################################################
+# #                                AUTOSTART APPS                              #
+# ##############################################################################
+
+# Clear cache.
+rm $HOME/.cache/dunst.log
+rm $HOME/.cache/fake_battery_capacity
+rm $HOME/.cache/eww-calendar.lock
+rm $HOME/.cache/eww-escreen.lock
+rm $HOME/.cache/eww-control-center.lock
+rm -r $HOME/.cache/dunst/
+
+# Fix cursor size.
+xsetroot -xcf /usr/share/icons/volantes-cursors/cursors/left_ptr 32
+
+# Autostart applications.
+#$HOME/.local/bin/eww open bar &
+pgrep -x sxhkd > /dev/null || sxhkd &
+dunst --config $HOME/.config/dunst/dunstrc &
+picom --config $HOME/.config/picom/picom.conf --experimental-backends &
+
+# Start polkit agent.
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+# Setup wallpaper.
+#hsetroot -solid "#1C2325"
+
+#hsetroot -fill $WALLPAPER
+
+# Mouse drift sucks
+xset m 0 0
+
+# Fix for eww bar not hiding on a fullscreen window.
+#pkill ewwFullscreenFix.sh; $HOME/.config/bspwm/scripts/ewwFullscreenFix.sh &
+# Make Do Not Disturb and Night Light work after power on or reboot.
+#pkill persistentQuickUtilities.sh; $HOME/.config/bspwm/scripts/persistentQuickUtilities.sh &
+
+# - - - - [ Start files ] - - - - #
+# Remember to put [ & ] after each file so that it actually continues with the rest of the script 
+
+# Start MPD and mpDris2
+exec mpd &
+exec mpDris2 &
+
+# Start multi-monitor setup
+exec ./bspwm/scripts/dualMonitor.sh &
+exec bash ~/.config/polybar/launch.sh --forest &
+
+
+# ##############################################################################
+# #                                 WINDOW RULES                               #
+# ##############################################################################
+
+bspc monitor eDP1 -d 1 2 3 4 5
+bspc monitor HDMI1 -d 6 7 8 9 0
+
+#rule firefoxdeveloperedition        desktop=1 follow=on
+#rule Navigator                      desktop=1 follow=on
+
+rule armcord                        desktop=1 follow=off
+#rule Code                           desktop=3
+#rule Steam                          desktop=4
+
+rule Viewnior                       state=floating
+rule mpv                            state=fullscreen follow=on
+rule ksnip                          state=floating
+
+exec nvidia-settings --load-config-only & # Load NVIDIA settings
+
+# ##############################################################################
+# #                            GENERAL CONFIGURATION                           #
+# ##############################################################################
+
+config pointer_modifier             Mod4
+
+config window_gap                   16
+
+config top_padding                  0
+config left_padding                 0
+config right_padding                0
+config bottom_padding               0
+
+config split_ratio                  0.54
+config borderless_monocle           true
+config gapless_monocle              true
+
+# ##############################################################################
+# #                                 MISCELLANEOUS                              #
+# ##############################################################################
+
+#start $HOME/.local/bin/brdr
+# Fix windows being below bar
+
+exec xrandr --output HDMI1 --auto --mode 1920x1080 --right-of eDP1 &
+hsetroot -fill $WALLPAPER
