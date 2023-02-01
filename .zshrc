@@ -130,7 +130,6 @@ source $ZSH/oh-my-zsh.sh
 # - - - - - [ Aliases ] - - - - -
 # chad aliases
 alias starwars='telnet towel.blinkenlights.nl'
-alias sus="~/sus | lolcat"
 
 # basic
 alias ping="ping -c 5"
@@ -140,7 +139,7 @@ alias rmf='rm -rf'
 alias clear="echo -ne '\0033\0143'" # actually clears the screen instead of just adding a bunch of new lines
 alias venv='source venv/bin/activate'
 alias bb='sudo bleachbit --clean system.cache system.localizations system.trash system.tmp'
-alias twitch='~/.config/SCRIPTS/twitch-streamlink/twitch.sh'
+alias twitch='python3 ~/.config/SCRIPTS/twitch-streamlink/twitch.py'
 
 # changing programs to better ones
 alias ls='exa --icons -al --git --color=always --group-directories-first'
