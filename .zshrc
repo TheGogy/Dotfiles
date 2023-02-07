@@ -139,7 +139,6 @@ alias rmf='rm -rf'
 alias clear="echo -ne '\0033\0143'" # actually clears the screen instead of just adding a bunch of new lines
 alias venv='source venv/bin/activate'
 alias bb='sudo bleachbit --clean system.cache system.localizations system.trash system.tmp'
-alias twitch='python3 ~/.config/SCRIPTS/twitch-streamlink/twitch.py'
 
 # changing programs to better ones
 alias ls='exa --icons -al --git --color=always --group-directories-first'
@@ -164,7 +163,6 @@ alias cleanup='pacman -Qtdq | sudo pacman -Rns'
 alias packs='pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h'
 alias deepclean='pacman -Qqd | sudo pacman -Rsu --print'
 alias unlock='sudo rm /var/lib/pacman/db.lck'
-alias tlmgr='TEXMFDIST/scripts/texlive/tlmgr.pl --usermode'
 
 # information
 alias gputemp="watch -tn1 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader"
